@@ -19,7 +19,7 @@ Netdot::Model::Device::API::CiscoNXOS - Cisco NXOS Class
 =head1 SYNOPSIS
 
  Overrides certain methods from the Device class. More Specifically, methods in
- this class try to obtain forwarding tables and ARP/ND caches via CLI
+ this class try to obtain forwarding tables and ARP/ND caches via API 
  instead of via SNMP.
 
 =head1 INSTANCE METHODS
@@ -122,7 +122,7 @@ sub get_fwt {
     my $start     = time;
     my $fwt_count = 0;
 
-    # Try CLI, and then SNMP
+    # Try API, and then SNMP
     $fwt = $self->_get_fwt_from_api(host=>$host) ||
 	$self->_get_fwt_from_snmp(session=>$argv{session});
 
@@ -169,7 +169,7 @@ sub _get_arp_from_api {
 	    $mac   = $2;
 	    $iname = $3;
 	}else{
-	    $logger->debug(sub{"Device::CLI::CiscoNXOS::_get_arp_from_cli: line did not match criteria: $line" });
+	    $logger->debug(sub{"Device::API::CiscoNXOS::_get_arp_from_cli: line did not match criteria: $line" });
 	    next;
 	}
 	unless ( $ip && $mac && $iname ){
