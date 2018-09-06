@@ -70,6 +70,7 @@ my @DEPS = (
     {cpan=>'Net::Appliance::Session', apt=>'libnet-appliance-sessione-perl', rpm=>'perl-Net-Appliance-Session'},
     {cpan=>'REST::Client', apt=>'librest-client-perl', rpm=>'perl-REST-Client'},
     {cpan=>'LWP::UserAgent', apt=>'libwww-perl', rpm=>'perl-LWP-UserAgent-Determined' },
+    {cpan=>'LWP::Protocol::https', apt=>'liblwp-protocol-https-perl', rpm=>'perl-LWP-Protocol-https' },
     {cpan=>'JSON', apt=>'libjson-perl', rpm=>'perl-JSON' },
     {apt=>'snmp'},
     ) ;
