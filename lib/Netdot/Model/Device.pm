@@ -6418,16 +6418,29 @@ sub _netdot_rebless {
 	$logger->debug("Device::_netdot_rebless: $host: Unknown SysObjectID $oid");
 	return;
     }
- 
+
+    # Order here matters, if a device machines on both CLI and API, API class will be used
     my %OID2CLASSMAP = %{ $self->config->get('FETCH_DEVICE_INFO_VIA_CLI') };
     foreach my $pat ( keys %OID2CLASSMAP ){
-	if ( $obj =~ /$pat/ ){
-	    my $subclass = $OID2CLASSMAP{$pat};
-	    $new_class .= "::CLI::$subclass";
-	    $logger->debug("Device::_netdot_rebless: $host: changed class to $new_class"); 
-	    bless $self, $new_class;
-	    return $self;
-	}
+        if ( $obj =~ /$pat/ ){
+            my $subclass = $OID2CLASSMAP{$pat};
+            $new_class .= "::CLI::$subclass";
+            $logger->debug("Device::_netdot_rebless: $host: changed class to $new_class");
+            bless $self, $new_class;
+            return $self;
+        }
+    }
+
+    # Search for any devices that should use an API
+    my %OID2CLASSMAP = %{ $self->config->get('FETCH_DEVICE_INFO_VIA_API') };
+    foreach my $pat ( keys %OID2CLASSMAP ){
+        if ( $obj =~ /$pat/ ){
+            my $subclass = $OID2CLASSMAP{$pat};
+            $new_class .= "::API::$subclass";
+            $logger->debug("Device::_netdot_rebless: $host: changed class to $new_class");
+            bless $self, $new_class;
+            return $self;
+        }
     }
 }
 
