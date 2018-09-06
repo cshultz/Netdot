@@ -66,6 +66,10 @@ my @DEPS = (
     {cpan=>'Net::DNS::ZoneFile::Fast', apt=> 'dnssec-tools', rpm=>''},
     {cpan=>'Socket6', apt=> 'libsocket6-perl', rpm=>'perl-Socket6'},
     {cpan=>'XML::Simple', apt=>'libxml-simple-perl', rpm=>'perl-XML-Simple'},
+    {cpan=>'HTTP::Request', apt=>'libhttp-message-perl', rpm=>'perl-HTTP-Common'},
+    {cpan=>'Net::Appliance::Session', apt=>'libnet-appliance-sessione-perl', rpm=>'perl-Net-Appliance-Session'},
+    {cpan=>'LWP::UserAgent', apt=>'libwww-perl', rpm=>'perl-LWP-UserAgent-Determined' },
+    {cpan=>'JSON', apt=>'libjson-perl', rpm=>'perl-JSON' },
     {apt=>'snmp'},
     ) ;
 
