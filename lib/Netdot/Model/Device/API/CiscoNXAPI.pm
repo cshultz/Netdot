@@ -149,6 +149,8 @@ sub _get_arp_from_api {
     my ($self, %argv) = @_;
     $self->isa_object_method('_get_arp_from_api');
 
+    $logger->info(sub{ sprintf("Device::API::CiscoNXOS::_get_arp_from_api snatching ARP entries from NXAPI") });
+
     my $host = $argv{host};
     my $args = $self->_get_credentials(host=>$host);
     return unless ref($args) eq 'HASH';
@@ -163,17 +165,17 @@ sub _get_arp_from_api {
     foreach my $line ( @output ) {
 	my ($iname, $ip, $mac, $intid);
 	chomp($line);
-	    $logger->debug(sub{"Device::API::CiscoNXOS::_get_arp_from_cli: Line: $line" });
+	    $logger->debug(sub{"Device::API::CiscoNXOS::_get_arp_from_api: Line: $line" });
 	    if ( $line =~ /^($IPV4)\s+[-\d:]+\s+($CISCO_MAC)\s+(\S+)/o ) {
 	    $ip    = $1;
 	    $mac   = $2;
 	    $iname = $3;
 	}else{
-	    $logger->debug(sub{"Device::API::CiscoNXOS::_get_arp_from_cli: line did not match criteria: $line" });
+	    $logger->debug(sub{"Device::API::CiscoNXOS::_get_arp_from_api: line did not match criteria: $line" });
 	    next;
 	}
 	unless ( $ip && $mac && $iname ){
-	    $logger->debug(sub{"Device::CiscoNXOS::_get_arp_from_cli: Missing information: $line" });
+	    $logger->debug(sub{"Device::CiscoNXOS::_get_arp_from_api: Missing information: $line" });
 	    next;
 	}
 	$cache{$iname}{$ip} = $mac;
@@ -212,11 +214,11 @@ sub _get_v6_nd_from_api {
 	    $mac   = $2;
 	    $iname = $3;
 	}else{
-	    $logger->debug(sub{"Device::API::CiscoNXOS::_get_v6_nd_from_cli: line did not match criteria: $line" });
+	    $logger->debug(sub{"Device::API::CiscoNXOS::_get_v6_nd_from_api: line did not match criteria: $line" });
 	    next;
 	}
 	unless ( $iname && $ip && $mac ){
-	    $logger->debug(sub{"Device::API::CiscoNXOS::_get_v6_nd_from_cli: Missing information: $line"});
+	    $logger->debug(sub{"Device::API::CiscoNXOS::_get_v6_nd_from_api: Missing information: $line"});
 	    next;
 	}
 	$cache{$iname}{$ip} = $mac;
@@ -240,6 +242,8 @@ sub _get_v6_nd_from_api {
 sub _get_fwt_from_api {
     my ($self, %argv) = @_;
     $self->isa_object_method('_get_fwt_from_api');
+
+    $logger->info(sub{ sprintf("Device::API::CiscoNXOS::_get_fwt_from_api snatching FWT entries from NXAPI") });
 
     my $host = $argv{host};
     my $args = $self->_get_credentials(host=>$host);
